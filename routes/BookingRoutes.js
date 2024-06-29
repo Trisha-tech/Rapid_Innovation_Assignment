@@ -30,7 +30,7 @@ router.get('/all-bookings', async (req, res) => {
 });
 /*  GETTING ALL FLIGHT BOOKINGS ROUTE ENDS */
 
-/*  UPDATE FLIGHT BOOKINGS ROUTE ENDS */
+/*  UPDATE FLIGHT BOOKINGS ROUTE STARTS */
 router.put('/update/:id', async (req, res) => {
     try {
         const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -47,5 +47,20 @@ router.put('/update/:id', async (req, res) => {
 });
 /*  UPDATE FLIGHT BOOKINGS ROUTE ENDS */
 
+/*  DELETE FLIGHT BOOKINGS ROUTE STARTS */
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const booking = await Booking.findByIdAndDelete(req.params.id);
+        if (!booking) return res.status(404).send();
+
+        res.send({
+            success: true,
+            booking
+        });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+/*  DELETE FLIGHT BOOKINGS ROUTE ENDS */
 
 module.exports = router;
