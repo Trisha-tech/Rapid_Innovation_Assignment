@@ -20,4 +20,14 @@ router.post('/new-booking', async (req, res) => {
 /*  NEW FLIGHT BOOKING ROUTE ENDS */
 
 
+router.get('/all-bookings', async (req, res) => {
+    try {
+        const bookings = await Booking.find();
+        res.send(bookings);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+});
+
+
 module.exports = router;
