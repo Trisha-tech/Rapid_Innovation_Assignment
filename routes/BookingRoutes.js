@@ -31,7 +31,7 @@ router.get('/all-bookings', async (req, res) => {
 /*  GETTING ALL FLIGHT BOOKINGS ROUTE ENDS */
 
 /*  UPDATE FLIGHT BOOKINGS ROUTE ENDS */
-router.put('/:id', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     try {
         const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!booking) 
