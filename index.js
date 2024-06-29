@@ -1,16 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
+const bookingRouter = require('./routes/BookingRoutes.js');
 
 const app = express();
 const server = http.createServer(app);
 
 app.use(bodyParser.json());
 
+
+
 const dotenv = require(`dotenv`)
 const mongoose = require('mongoose')
 
 dotenv.config({path : `.env`})
+
+app.use('/bookings', bookingRouter);
 
 /*MONGODB CONNECTION START*/
 const MONGO_URL = process.env.MONGO_URL ;
