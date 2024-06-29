@@ -9,8 +9,8 @@ router.post('/new-booking', async (req, res) => {
         await booking.save();
 
         res.status(201).send({
-                success: true,
-                booking
+            success: true,
+            booking
         });
 
     } catch (err) {
@@ -29,6 +29,23 @@ router.get('/all-bookings', async (req, res) => {
     }
 });
 /*  GETTING ALL FLIGHT BOOKINGS ROUTE ENDS */
+
+/*  UPDATE FLIGHT BOOKINGS ROUTE ENDS */
+router.put('/:id', async (req, res) => {
+    try {
+        const booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!booking) 
+            return res.status(404).send();
+
+        res.send({
+            success: true,
+            booking
+        });
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+/*  UPDATE FLIGHT BOOKINGS ROUTE ENDS */
 
 
 module.exports = router;
