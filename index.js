@@ -2,9 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const bookingRouter = require('./routes/BookingRoutes.js');
+const socket = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
+
+const io = socket(server);
 
 app.use(bodyParser.json());
 
@@ -31,6 +34,17 @@ mongoose.connection.on('error', (err) => {
     console.log("Error Connecting to Database", err)
 })
 /*MONGODB CONNECTION END*/
+
+/* SOCKET.IO CONNECTION STARTS*/
+io.on('connection', (socket) => {
+    console.log('New client connected');
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
+app.set('socketio', io);
+/* SOCKET.IO CONNECTION ENDS*/
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
