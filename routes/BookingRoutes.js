@@ -8,6 +8,10 @@ router.post('/new-booking', async (req, res) => {
         const booking = new Booking(req.body);
         await booking.save();
 
+         // Socket.io changes request
+        const io = req.app.get('socketio');
+        io.emit('BookingCreated', booking);
+
         res.status(201).send({
             success: true,
             booking
@@ -37,6 +41,10 @@ router.put('/update/:id', async (req, res) => {
         if (!booking) 
             return res.status(404).send();
 
+         // Socket.io changes request
+        const io = req.app.get('socketio');
+        io.emit('BookingUpdated', booking);
+
         res.send({
             success: true,
             booking
@@ -52,6 +60,10 @@ router.delete('/delete/:id', async (req, res) => {
     try {
         const booking = await Booking.findByIdAndDelete(req.params.id);
         if (!booking) return res.status(404).send();
+
+        // Socket.io changes request
+        const io = req.app.get('socketio');
+        io.emit('BookingDeleted', booking);
 
         res.send({
             success: true,
