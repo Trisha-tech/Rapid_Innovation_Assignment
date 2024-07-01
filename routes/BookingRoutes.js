@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Booking = require('../models/Booking');
+const Booking = require('../models/Booking.js');
+
+
 
 /*  NEW FLIGHT BOOKING ROUTE STARTS */
 router.post('/new-booking', async (req, res) => {
