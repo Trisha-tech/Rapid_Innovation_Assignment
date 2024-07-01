@@ -3,6 +3,8 @@
 
 
 Use Case: Flight Booking System
+
+
 You are tasked with creating a Flight Booking System. The system should allowusers to search for flights, book flights, manage bookings (create, read, update, delete), and receive booking confirmations via email with a PDF attachment of their booking details.
 
 
