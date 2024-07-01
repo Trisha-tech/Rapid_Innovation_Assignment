@@ -1,14 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking.js');
+const { pdfGenerator } = require('../pdfGenerator.js');
 
-
+require('dotenv').config();
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.API_KEY);
 
 /*  NEW FLIGHT BOOKING ROUTE STARTS */
 router.post('/new-booking', async (req, res) => {
     try {
         const booking = new Booking(req.body);
         await booking.save();
+
+        const pdf = await pdfGenerator(booking);
+
+        const message = {
+            to: booking.email, 
+            from: '49trishasahu@gmail.com', 
+            subject: 'Flight Ticket Booking Confirmation',
+            text: `Your booking has been confirmed. Details: Flight Number - ${booking.flightNumber}, Passenger Name - ${booking.passengerName}, Departure Date - ${booking.departureDate}, Seat Number - ${booking.seatNumber}`,
+            attachments: [
+                {
+                    content: pdf.toString('base64'),
+                    filename: 'booking.pdf',
+                    type: 'application/pdf',
+                    disposition: 'attachment'
+                }
+            ]
+        };
+    
+        await sgMail.send(message);
 
          // Socket.io changes request
         const io = req.app.get('socketio');
